@@ -7,21 +7,26 @@
 
 import SwiftUI
 struct TaskInfoScreen: View {
+    
+    
+    let task : Task
+    
+    @Binding var goToInfo : Bool
+    
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
                     
-                    Text("Finalize Project\nProposal")
+                    Text(task.title ?? "")
                         .font(.custom(Fonts.PUVI_EXTRABOLD, size: 40))
                         .padding(.vertical)
                     
                     VStack(spacing: 22) {
-                        TaskInfoRow(icon: "calendar", iconColor: .blue, title: "Due Date", value: "Tomorrow, 10:00 AM")
-                        TaskInfoRow(icon: "exclamationmark.circle", iconColor: .red, title: "Priority", value: "High", valueColor: .red)
-                        TaskInfoRow(icon: "folder", iconColor: .orange, title: "Category", value: "Work Projects")
+                        TaskInfoRow(icon: "calendar", iconColor: .blue, title: "Due Date", value: Utils.dateToString(task.dueDate ?? Date(),format: "dd MMM YYY"))
+                        TaskInfoRow(icon: "exclamationmark.circle", iconColor: .red, title: "Priority", value: task.priority ?? "", valueColor: .red)
+                        TaskInfoRow(icon: "folder", iconColor: .orange, title: "Category", value: task.category ?? " ")
                     }
                     .padding(.vertical,30)
                     .background(Color.white)
@@ -33,7 +38,7 @@ struct TaskInfoScreen: View {
                             .font(.custom(Fonts.PUVI_MEDIUM, size: 21))
                         
                         Text("""
-Review the final draft of the project proposal, incorporate feedback from the team meeting, and send it to the client for final approval. Ensure all sections are complete and free of errors.
+\(task.description)
 """)
                             .lineSpacing(7)
                             .font(.custom(Fonts.PUVI_MEDIUM, size: 17))
@@ -73,13 +78,6 @@ Review the final draft of the project proposal, incorporate feedback from the te
             }
             .padding(.horizontal)
             .navigationBarTitle("Task Details", displayMode: .inline)
-            .navigationBarItems(
-                leading: Button(action: { presentationMode.wrappedValue.dismiss() }) {
-                    Image(systemName: "chevron.left")
-                },
-                trailing: Button("Edit") {}
-            )
-        }
     }
 }
 struct TaskInfoRow: View {
@@ -114,9 +112,10 @@ struct TaskInfoRow: View {
         .padding(.horizontal)
     }
 }
-
+/*
 struct TaskInfoScreen_Previews: PreviewProvider {
     static var previews: some View {
         TaskInfoScreen()
     }
 }
+*/

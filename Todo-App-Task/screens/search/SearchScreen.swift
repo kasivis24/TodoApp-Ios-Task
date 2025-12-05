@@ -1,13 +1,12 @@
 //
-//  TaskScreen.swift
+//  SearchScreen.swift
 //  Todo-App-Task
 //
-//  Created by Kasivishwanathan M on 03/12/25.
+//  Created by Kasivishwanathan M on 04/12/25.
 //
 
-
 import SwiftUI
-struct TaskScreen: View {
+struct SearchScreen: View {
     @State private var selectedTask: Task? = nil
     @StateObject var taskViewModel = TaskViewModel()
     @State private var bottomSheet = false
@@ -18,6 +17,8 @@ struct TaskScreen: View {
     @State private var snackBar = false
     @State private var snackBarMessage = ""
     @State private var snackBarState = SnackBarType.info
+    
+    @State private var searchData = ""
     
     var body: some View {
         NavigationView {
@@ -42,8 +43,11 @@ struct TaskScreen: View {
                     .hidden()
                 }
                 ScrollView(.vertical, showsIndicators: false) {
-                    
                     VStack(spacing: 18) {
+                        
+                        
+                        SearchBar(searchText : $searchData)
+                        
                         ForEach(taskViewModel.tasks, id: \.id) { task in
                             TaskItem(
                                 title: task.title ?? "",
@@ -106,7 +110,7 @@ struct TaskScreen: View {
                 }
             }
             .navigationBarItems(
-                leading: Text("MyTasks")
+                leading: Text("Search")
                     .font(.custom(Fonts.PUVI_BOLD, size: 32)),
                 trailing: HStack {
                     Image(systemName: "arrow.up")
@@ -128,8 +132,8 @@ struct TaskScreen: View {
         }
     }
 }
-struct TaskScreen_Previews: PreviewProvider {
+struct SearchScreen_Previews: PreviewProvider {
     static var previews: some View {
-        TaskScreen()
+        SearchScreen()
     }
 }

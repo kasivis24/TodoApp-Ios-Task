@@ -17,54 +17,112 @@ struct TaskItem: View {
     var progress: CGFloat
     var completed: Bool
     
+    let onTapEdit : ()-> Void
+    let onTapDelete : ()-> Void
+    let onInfo : () -> Void
+    
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Circle()
-                    .stroke(lineWidth: 2)
-                    .fill(completed ? Color.blue : Color.gray.opacity(0.3))
-                    .frame(width: 25, height: 25)
-                
-                Text(title)
-                    .font(.custom(Fonts.PUVI_MEDIUM, size : 18))
-                    .foregroundColor(completed ? .gray : .black)
-                    .strikethrough(completed)
-                
-                Spacer()
-                
-                Image(systemName: "flag.fill")
-                    .foregroundColor(.gray)
-            }
+        VStack(alignment: .leading) {
             
-            Text("Due: \(due)")
-                .font(.custom(Fonts.PUVI_REGULAR, size: 18))
-                .foregroundColor(.gray)
-                .padding(.leading, 32)
+            HStack (spacing : 15){
             
-            HStack {
-                HStack(spacing: 6) {
-                    Circle()
-                        .fill(categoryDotColor)
-                        .frame(width: 8, height: 8)
+                
+                VStack (alignment : .leading){
                     
-                    Text(category)
-                        .font(.caption)
-                        .foregroundColor(categoryDotColor)
+                    Image(systemName: completed ? "checkmark.circle.fill" : "clock")
+                        .foregroundColor(completed ? .green : .blue)
+                
+                    
                 }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(categoryColor)
-                .cornerRadius(12)
                 
-                Spacer()
                 
-                TaskProgressBar(progress: progress)
+                VStack (alignment : .leading,spacing : 18){
+                    HStack {
+                        
+                        Text(title)
+                            .font(.custom(Fonts.PUVI_MEDIUM, size : 18))
+                            .foregroundColor(completed ? .gray : .black)
+                            .strikethrough(completed)
+                        
+                        Spacer()
+                        
+                        Menu {
+                                Button( action: { print("Edit tapped")
+                                    onTapEdit()
+                                }){
+                                    HStack {
+                                        Text("Edit")
+                                        
+                                        Image("pencil")
+                                    }
+                                }
+                                Button(action: { print("Delete tapped")
+                                    onTapDelete()
+                                }){
+                                    HStack {
+                                        Text("Delete")
+                                        
+                                        Image("trash.fill")
+                                    }
+                                }
+                                Button(action: { print("Info tapped")
+                                    onInfo()
+                                }){
+                                    HStack {
+                                        Text("Info")
+                                        
+                                        Image("info")
+                                    }
+                                }
+                        }
+                        label: {
+                        Image(systemName: "ellipsis")
+                            .font(.headline)
+                        }
+                        
+                    }
+                    
+
+                    HStack (){
+                        Text("Due: \(due)")
+                            .font(.custom(Fonts.PUVI_REGULAR, size: 18))
+                            .foregroundColor(.gray)
+                        
+                        Image(systemName : "flag.fill")
+                            .foregroundColor(.gray.opacity(0.8))
+                            .padding(.horizontal)
+                    }
+                    
+                    HStack {
+                        HStack(spacing: 6) {
+                            Circle()
+                                .fill(categoryDotColor)
+                                .frame(width: 8, height: 8)
+                            
+                            Text(category)
+                                .font(.caption)
+                                .foregroundColor(categoryDotColor)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(categoryColor)
+                        .cornerRadius(12)
+                        
+                        Spacer()
+                        
+                        TaskProgressBar(progress: progress)
+                        
+                    }
+                    
+                }
+                
             }
         }
         .padding()
         .background(Color.white)
         .cornerRadius(18)
-        .shadow(color: .gray.opacity(0.15), radius: 5, x: 0, y: 2)
+        .shadow(color: .gray.opacity(0.15), radius: 5, x: 7, y: 10)
         .padding(.horizontal)
     }
 }
@@ -78,6 +136,16 @@ struct TaskItem_Previews: PreviewProvider {
                                     categoryColor: Color.orange.opacity(0.2),
                                     categoryDotColor: .orange,
                                     progress: 0.50,
-                                    completed: false        )
+                                    completed: false,
+            onTapEdit: {
+                
+            },
+            onTapDelete: {
+                
+            },
+            onInfo : {
+                
+            }
+        )
     }
 }
