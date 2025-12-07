@@ -16,4 +16,26 @@ struct Utils {
         
     }
     
+    static func relativeDayString(from date: Date) -> String {
+            let calendar = Calendar.current
+            let today = calendar.startOfDay(for: Date())
+            let target = calendar.startOfDay(for: date)
+            
+            guard let diff = calendar.dateComponents([.day], from: today, to: target).day else {
+                return ""
+            }
+            
+            switch diff {
+            case 0:
+                return "Today"
+            case 1:
+                return "Tomorrow"
+            case 2...6:
+                return "In \(diff) days"
+            default:
+                let formatter = DateFormatter()
+                formatter.dateStyle = .medium
+                return formatter.string(from: date) // e.g., "Dec 15, 2025"
+            }
+        }
 }

@@ -34,9 +34,9 @@ struct TaskInfoScreen: View {
                         .padding(.vertical)
                     
                     VStack(spacing: 22) {
-                        TaskInfoRow(icon: "calendar", iconColor: .blue, title: "Due Date", value: Utils.dateToString(task.dueDate ?? Date(),format: "dd MMM YYY"))
+                        TaskInfoRow(icon: "calendar", iconColor: .blue, title: "Due Date", value: Utils.dateToString(task.dueDate ?? Date(),format: "dd MMM YYY"),valueColor: Color.primaryColor)
                         TaskInfoRow(icon: "exclamationmark.circle", iconColor: .red, title: "Priority", value: task.priority ?? "", valueColor: .red)
-                        TaskInfoRow(icon: "folder", iconColor: .orange, title: "Category", value: task.category ?? " ")
+                        TaskInfoRow(icon: "folder", iconColor: .orange, title: "Category", value: task.category ?? " ",valueColor: Color.primaryColor)
                     }
                     .padding(.vertical,30)
                     .background(Color.cardColor)

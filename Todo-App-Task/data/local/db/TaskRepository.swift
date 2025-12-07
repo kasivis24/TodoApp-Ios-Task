@@ -133,7 +133,6 @@ class TaskRepository: Database {
             let tasks = fetchAllTasks()
             tasks.forEach { task in
                 if let dueDate = task.dueDate,
-                   !task.isCompleted,
                    dueDate < Date() {
                     if task.isOverDue == false {
                         print("🔴 Task overdue updated: \(task.title ?? "")")

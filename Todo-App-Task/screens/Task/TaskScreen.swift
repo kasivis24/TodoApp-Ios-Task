@@ -34,15 +34,36 @@ struct TaskScreen: View {
                     .hidden()
                 }
                 
-                if let selectedTask = selectedTask  {
-                    NavigationLink(
-                        destination: TaskInfoScreen(task: selectedTask, goToInfo: $goToTaskInfo),
-                        isActive: $goToTaskInfo
-                    ) {
-                        EmptyView()
-                    }
-                    .hidden()
+                
+                NavigationLink(
+                    destination: Group {
+                        if let selectedTask = selectedTask {
+                            TaskInfoScreen(task: selectedTask, goToInfo: $goToTaskInfo)
+                        } else {
+                            EmptyView()
+                        }
+                    },
+                    isActive: $goToTaskInfo
+                ) {
+                    EmptyView()
                 }
+                .hidden()
+                
+                NavigationLink(
+                    destination: Group {
+                        if let selectedTask = selectedTask {
+                            EditTaskScreen(task: selectedTask, goToEdit: $goToEdit)
+                        } else {
+                            EmptyView()
+                        }
+                    },
+                    isActive: $goToEdit
+                ) {
+                    EmptyView()
+                }
+                .hidden()
+                
+                
                 ScrollView(.vertical, showsIndicators: false) {
                     
                     VStack(spacing: 18) {
@@ -123,14 +144,16 @@ struct TaskScreen: View {
                 }
             )
             .onAppear {
-            
-                if !isLoaded {
-                        isLoaded = true
-                        taskViewModel.fetchAllTasks(
-                            onSuccess: {},
-                            onFailure: {}
-                        )
-                    }
+                
+                DispatchQueue.main.async {
+                    
+                        if !isLoaded {
+                                isLoaded = true
+                                taskViewModel.fetchAllTasks(
+                                    onSuccess: {},
+                                    onFailure: {}
+                                )
+                            }                }
                 
             }
         }

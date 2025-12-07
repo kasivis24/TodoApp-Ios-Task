@@ -36,10 +36,13 @@ struct TaskItem: View {
                     if let data = thumnail, let uiImage = UIImage(data: data) {
                             Image(uiImage: uiImage)
                                 .resizable()
-                                .scaledToFill()
-                                .frame(width: 70, height: 70)
+                                .scaledToFit()
+                                .padding(10)
+                                .frame(width : 70,height : 70)
+                                .background(Color.gray.opacity(0.2))
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                        } else {
+                        
+                    } else {
                            
                             Image(systemName: "photo")
                                 .resizable()

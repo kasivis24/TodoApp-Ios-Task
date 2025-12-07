@@ -3,12 +3,18 @@
 //  Todo-App-Task
 //
 //  Created by Kasivishwanathan M on 04/12/25.
+
 import SwiftUI
 struct HomeScreen: View {
     
     @State private var percent = 50
     
+    @StateObject private var homeViewModel = HomeViewModel()
+    
     var body: some View {
+        
+        
+        NavigationView {
         
         ZStack {
             
@@ -30,10 +36,10 @@ struct HomeScreen: View {
                     HStack {
                         
                         DashboardCard(
-                            title: "DueDate", value: "10", icon: "calendar",  gradient: Gradient(colors: [.blue.opacity(0.5), .blue])    )
+                            title: "DueDate", value: "\(homeViewModel.totalDueDate)", icon: "calendar",  gradient: Gradient(colors: [.blue.opacity(0.5), .blue])    )
                         
                         DashboardCard(
-                            title: "Completed", value: "5", icon: "checkmark.circle.fill",  gradient: Gradient(colors: [.green.opacity(0.5), .green])    )
+                            title: "Completed", value: "\(homeViewModel.completed)", icon: "checkmark.circle.fill",  gradient: Gradient(colors: [.green.opacity(0.5), .green])    )
                         
                 
                         
@@ -44,10 +50,10 @@ struct HomeScreen: View {
                     HStack {
                         
                         DashboardCard(
-                            title: "Over Due", value: "10", icon: "exclamationmark.circle",  gradient: Gradient(colors: [.red.opacity(0.5), .red])    )
+                            title: "Over Due", value: "\(homeViewModel.overDue)", icon: "exclamationmark.circle",  gradient: Gradient(colors: [.red.opacity(0.5), .red])    )
                         
                         DashboardCard(
-                            title: "All Task", value: "5", icon: "tray.full",  gradient: Gradient(colors: [.gray.opacity(0.5), .gray])    )
+                            title: "All Task", value: "\(homeViewModel.allTasks)", icon: "tray.full",  gradient: Gradient(colors: [.gray.opacity(0.5), .gray])    )
                         
                 
                         
@@ -66,15 +72,15 @@ struct HomeScreen: View {
                        
                       
                         PriorityRow(title : "High",color : Color.red,
-                                    percent: 0.25
+                                    percent: homeViewModel.highPercent
                                     )
                             
                             PriorityRow(title : "Medium",color : Color.orange,
-                                        percent: 0.55
+                                        percent: homeViewModel.mediumPercent
                                         )
                             
                             PriorityRow(title : "Low",color : Color.blue,
-                                        percent: 0.85
+                                        percent: homeViewModel.lowPercent
                                         )
                             
                         }
@@ -99,18 +105,16 @@ struct HomeScreen: View {
                             Text("Upcoming Task")
                                 .font(.custom(Fonts.PUVI_MEDIUM, size: 22))
                             
+                            ForEach(homeViewModel.upcomingTasks){task in
+                                UpcoimgTaskItem(icon : "calendar",title: task.title ?? "",
+                                                dueDateContent: Utils.relativeDayString(from: task.dueDate ?? Date()),
+                                                priority: task.priority ?? ""
+                                 )
+                                
+                                Divider()
+                            }
                             
-                            UpcoimgTaskItem(icon : "calendar",title: "Finalize quarterly report",
-                              dueDateContent: "Due date : 2 days",
-                              priority: "high"
-                              )
-                            
-                            Divider()
-                            
-                            UpcoimgTaskItem(icon : "calendar",title: "Finalize quarterly report",
-                              dueDateContent: "Due date : 2 days",
-                              priority: "high"
-                              )
+                        
                         }
                         .padding()
                     }
@@ -126,6 +130,9 @@ struct HomeScreen: View {
             }
             
         }
+        .navigationTitle("Zodo")
+    }
+        
     }
 }
 
@@ -151,7 +158,7 @@ struct UpcoimgTaskItem : View {
                     .font(.custom(Fonts.PUVI_MEDIUM, size: 18))
             
                 
-                Text(dueDateContent)
+                Text("Due : \(dueDateContent)")
                     .font(.custom(Fonts.PUVI_REGULAR, size: 16))
             }
             
