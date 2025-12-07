@@ -12,10 +12,17 @@ class TaskViewModel : ObservableObject {
     
     @Published var tasks : [Task] = []
     
+    private var timer : Timer?
+    
+    init() {
+        startOverdueTimer()
+    }
+    
     
     func addNewTask(taskModel : TaskModel,onSuccess : ()-> Void,onFailed : ()-> Void) {
         
         repository.saveTask(title : taskModel.title,description: taskModel.desc,dueDate: taskModel.dueDate,reminder: taskModel.reminder,priority: taskModel.priority,category: taskModel.category,isCompleted: taskModel.isCompleted,
+                            thumnail: taskModel.thumnail,
                             onSuccess: {
                                 onSuccess()
                             },
@@ -31,6 +38,12 @@ class TaskViewModel : ObservableObject {
         repository.fetchAllTasks(onSuccess: {taskList in
             
             self.tasks = taskList
+            
+            self.tasks.forEach{task in
+                print("Fetch Task adat -> \(task.isOverDue)")
+            }
+            
+            print("Fteched lists \(self.tasks)")
             onSuccess()
             
         }, onFailed: {
@@ -76,4 +89,17 @@ class TaskViewModel : ObservableObject {
 
         
     }
+    
+    func startOverdueTimer() {
+            timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { [weak self] _ in
+                
+                print("background task runnin ----->")
+                self?.checkOverdueStatus()
+            }
+        }
+    
+        func checkOverdueStatus() {
+            repository.updateOverdueTasks()
+            tasks = repository.fetchAllTasks() // Refresh UI when overdue changes
+        }
 }

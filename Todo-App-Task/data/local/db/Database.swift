@@ -15,6 +15,7 @@ protocol Database {
        priority: String,
        category: String,
        isCompleted: Bool,
+        thumnail : Data?,
         onSuccess : ()-> Void,
         onFailed : ()-> Void
     )
@@ -24,5 +25,11 @@ protocol Database {
     func updateTask(taskModel : TaskModel, onSuccess : ()-> Void,onFailed : ()-> Void)
     
     func deleteTask(taskId : UUID,onSuccess : ()-> Void,onFailed : ()-> Void)
+    
+    func fetchAllTasks() -> [Task]
+    
+    func saveContext()
+    
+    func updateOverdueTasks()
     
 }

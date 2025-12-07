@@ -19,7 +19,7 @@ class TaskRepository: Database {
     
     
     
-    func saveTask(title: String, description: String, dueDate: Date?, reminder: Bool, priority: String, category: String, isCompleted: Bool,onSuccess : ()-> Void,onFailed : ()-> Void) {
+    func saveTask(title: String, description: String, dueDate: Date?, reminder: Bool, priority: String, category: String, isCompleted: Bool,thumnail : Data?,onSuccess : ()-> Void,onFailed : ()-> Void) {
 
         
         let entity = Task(context: context)
@@ -31,6 +31,9 @@ class TaskRepository: Database {
             entity.category = category
             entity.isCompleted = isCompleted
         entity.remainder = reminder
+        entity.thumnail = thumnail
+        entity.isOverDue = true
+        
             do {
                 try context.save()
                 print("Saved Successfully")
@@ -47,6 +50,10 @@ class TaskRepository: Database {
             request.sortDescriptors = [NSSortDescriptor(key: "dueDate", ascending: true)]
             do {
                 let list = try context.fetch(request)
+                
+                list.forEach { task in
+                    print("Task From DB -> \(task.isOverDue)")
+                }
                 onSuccess(list)
             } catch {
                 onFailed()
@@ -73,7 +80,7 @@ class TaskRepository: Database {
                         task.dueDate = taskModel.dueDate
                         task.remainder = taskModel.reminder
                         task.isCompleted = taskModel.isCompleted
-                        
+                        task.thumnail = taskModel.thumnail
                         try context.save()
                         onSuccess()
                     } else {
@@ -103,7 +110,41 @@ class TaskRepository: Database {
                     onFailed()
                 }
             }
-}
+    
+    func fetchAllTasks() -> [Task] {
+        let request = NSFetchRequest<Task>(entityName: "Task")
+        request.sortDescriptors = [NSSortDescriptor(key: "dueDate", ascending: true)]
+        do {
+            return try context.fetch(request)
+        } catch {
+            return []
+        }
+    }
+    
+        func saveContext() {
+            do {
+                try context.save()
+            } catch {
+                print("❌ Save failed: \(error)")
+            }
+        }
+        
+        func updateOverdueTasks() {
+            let tasks = fetchAllTasks()
+            tasks.forEach { task in
+                if let dueDate = task.dueDate,
+                   !task.isCompleted,
+                   dueDate < Date() {
+                    if task.isOverDue == false {
+                        print("🔴 Task overdue updated: \(task.title ?? "")")
+                    }
+                    task.isOverDue = true
+                } else {
+                    task.isOverDue = false
+                }
+            }
+            saveContext()
+        }}
 
     
     

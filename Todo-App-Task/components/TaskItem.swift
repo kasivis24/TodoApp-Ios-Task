@@ -16,6 +16,9 @@ struct TaskItem: View {
     var categoryDotColor: Color
     var progress: CGFloat
     var completed: Bool
+    var thumnail : Data?
+    var flagColor : Color
+    var isOverDue : Bool
     
     let onTapEdit : ()-> Void
     let onTapDelete : ()-> Void
@@ -30,9 +33,20 @@ struct TaskItem: View {
                 
                 VStack (alignment : .leading){
                     
-                    Image(systemName: completed ? "checkmark.circle.fill" : "clock")
-                        .foregroundColor(completed ? .green : .blue)
-                
+                    if let data = thumnail, let uiImage = UIImage(data: data) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 70, height: 70)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                        } else {
+                           
+                            Image(systemName: "photo")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 70, height: 70)
+                                .foregroundColor(.gray)
+                        }
                     
                 }
                 
@@ -42,7 +56,6 @@ struct TaskItem: View {
                         
                         Text(title)
                             .font(.custom(Fonts.PUVI_MEDIUM, size : 18))
-                            .foregroundColor(completed ? .gray : .black)
                             .strikethrough(completed)
                         
                         Spacer()
@@ -89,9 +102,10 @@ struct TaskItem: View {
                             .font(.custom(Fonts.PUVI_REGULAR, size: 18))
                             .foregroundColor(.gray)
                         
+                        Spacer()
+                        
                         Image(systemName : "flag.fill")
-                            .foregroundColor(.gray.opacity(0.8))
-                            .padding(.horizontal)
+                            .foregroundColor(flagColor)
                     }
                     
                     HStack {
@@ -114,38 +128,94 @@ struct TaskItem: View {
                         TaskProgressBar(progress: progress)
                         
                     }
+                    .frame(maxWidth : .infinity)
+                    
+                    
+                    if isOverDue {
+                    
+                    HStack {
+                        
+                        HStack {
+                        
+                        Text("This task is overdue due ")
+                            .font(.custom(Fonts.PUVI_REGULAR_ITALIC, size: 15))
+                            .foregroundColor(.red)
+                            .padding(.horizontal,8)
+                            .padding(.vertical,3)
+                            
+                        }
+                        .background(Color.red.opacity(0.1))
+                        .cornerRadius(10)
+                        
+                        
+                    }.frame(maxWidth : .infinity, alignment: .leading)
+                    
+                }
                     
                 }
                 
             }
         }
         .padding()
-        .background(Color.white)
-        .cornerRadius(18)
+        .background(Color.cardColor)
+        .cornerRadius(12)
         .shadow(color: .gray.opacity(0.15), radius: 5, x: 7, y: 10)
-        .padding(.horizontal)
+            .padding(.horizontal)
     }
 }
 
 struct TaskItem_Previews: PreviewProvider {
     static var previews: some View {
-        TaskItem(
-            title: "Respond to client emails",
-                                    due: "Oct 28",
-                                    category: "Urgent",
-                                    categoryColor: Color.orange.opacity(0.2),
-                                    categoryDotColor: .orange,
-                                    progress: 0.50,
-                                    completed: false,
-            onTapEdit: {
-                
-            },
-            onTapDelete: {
-                
-            },
-            onInfo : {
-                
-            }
-        )
+        
+        
+        Group {
+            TaskItem(
+                title: "Respond to client emails",
+                                        due: "Oct 28",
+                                        category: "Urgent",
+                                        categoryColor: Color.orange.opacity(0.2),
+                                        categoryDotColor: .orange,
+                                        progress: 0.50,
+                                        completed: false,
+                flagColor: Color.priorityFlag("high"),
+                isOverDue : true,
+                onTapEdit: {
+                    
+                },
+                onTapDelete: {
+                    
+                },
+                onInfo : {
+                    
+                }
+            )
+            .environmentObject(ThemeManager())
+            .preferredColorScheme(.dark)
+            
+            TaskItem(
+                title: "Respond to client emails",
+                                        due: "Oct 28",
+                                        category: "Urgent",
+                                        categoryColor: Color.orange.opacity(0.2),
+                                        categoryDotColor: .orange,
+                                        progress: 0.50,
+                                        completed: false,
+                flagColor: Color.priorityFlag("high"),
+                isOverDue : true,
+                onTapEdit: {
+                    
+                },
+                onTapDelete: {
+                    
+                },
+                onInfo : {
+                    
+                }
+            )
+            .environmentObject(ThemeManager())
+            .preferredColorScheme(.light)
+            
+        }
+        
     }
 }

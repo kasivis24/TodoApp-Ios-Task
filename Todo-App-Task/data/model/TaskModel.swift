@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 struct TaskModel {
     let id: UUID
     let title: String
@@ -15,6 +16,8 @@ struct TaskModel {
     let category: String
     let isCompleted: Bool
     let reminder: Bool
+    let thumnail : Data?
+    let isOverDue : Bool
     init(
         id: UUID = UUID(),
         title: String,
@@ -23,7 +26,9 @@ struct TaskModel {
         priority: String,
         category: String,
         isCompleted: Bool = false,
-        reminder: Bool = false
+        reminder: Bool = false,
+        thumnail: Data? = nil,
+        isOverDue: Bool = false
     ) {
         self.id = id
         self.title = title
@@ -33,5 +38,7 @@ struct TaskModel {
         self.category = category
         self.isCompleted = isCompleted
         self.reminder = reminder
+        self.thumnail = thumnail
+        self.isOverDue = isOverDue
     }
 }

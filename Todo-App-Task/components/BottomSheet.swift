@@ -8,31 +8,44 @@
 import SwiftUI
 
 struct BottomSheet<Content: View>: View {
+    
     @Binding var showSheet: Bool
-    let content: () -> Content 
+    let size : BottomSheetSize
+    let searchViewModel : SearchViewModel
+    let content: () -> Content
+
     
     var body: some View {
-        VStack {
-            Spacer()
+        
+        ZStack (alignment : .bottom){
+            Color.black.opacity(0.7)
+                .onTapGesture {
+                    showSheet = false
+                }
             
-            VStack(spacing: 0) {
-                Capsule()
-                    .fill(Color.gray)
-                    .frame(width: 40, height: 6)
-                    .padding(.top, 10)
-                content()
-                    .padding()
-                    .padding(.vertical, 80)
+            
+            VStack {
+                
+                VStack(spacing: 0) {
+                    ScrollView {
+                    
+                        content()
+                            .padding()
+                                    
+                    }
+                }
+                .frame(maxWidth: .infinity,maxHeight : size.height)
+                //.cornerRadius(10,corners: [.topLeft,.topRight])
+                //.shadow(radius: 10)
+                .animation(.spring(), value: showSheet)
+
             }
-            .frame(maxWidth: .infinity)
-            .background(Color.white)
-            .cornerRadius(20)
-            .shadow(radius: 10)
-            .offset(y: showSheet ? 0 : UIScreen.main.bounds.height)
-            .animation(.spring(), value: showSheet)
+
+            
             
         }
-        .ignoresSafeArea()
+        .frame(alignment : .bottom)
+
     }
 
 }

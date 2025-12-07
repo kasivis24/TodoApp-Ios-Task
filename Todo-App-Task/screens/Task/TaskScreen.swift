@@ -19,6 +19,8 @@ struct TaskScreen: View {
     @State private var snackBarMessage = ""
     @State private var snackBarState = SnackBarType.info
     
+    @State private var isLoaded = false
+    
     var body: some View {
         NavigationView {
             ZStack(alignment: .leading) {
@@ -49,10 +51,13 @@ struct TaskScreen: View {
                                 title: task.title ?? "",
                                 due: Utils.dateToString(task.dueDate ?? Date(), format: "dd MMM yyyy"),
                                 category: task.category ?? "",
-                                categoryColor: Color.purple.opacity(0.2),
-                                categoryDotColor: .purple,
+                                categoryColor: Color.categoryBackground( task.category ?? ""),
+                                categoryDotColor: Color.categoryDot(task.category ?? ""),
                                 progress: 0.25,
                                 completed: task.isCompleted,
+                                thumnail: task.thumnail,
+                                flagColor: Color.priorityFlag(task.priority ?? ""),
+                                isOverDue: task.isOverDue,
                                 onTapEdit: {
                                     selectedTask = task
                                     goToEdit = true
@@ -74,12 +79,12 @@ struct TaskScreen: View {
                 }
                 Spacer()
                 if bottomSheet {
-                    BottomSheet(showSheet: $bottomSheet) {
+                    /*BottomSheet(showSheet: $bottomSheet) {
                         VStack {
                             Text("Bdisidhshdi")
                             Text("sd sbdisbijdbi")
                         }
-                    }
+                    }*/
                 }
                 if deleteTask {
                     AlertDialog(
@@ -118,12 +123,15 @@ struct TaskScreen: View {
                 }
             )
             .onAppear {
+            
+                if !isLoaded {
+                        isLoaded = true
+                        taskViewModel.fetchAllTasks(
+                            onSuccess: {},
+                            onFailure: {}
+                        )
+                    }
                 
-                print("ONApper ftech check ----->> ")
-                taskViewModel.fetchAllTasks(
-                    onSuccess: {},
-                    onFailure: {}
-                )
             }
         }
     }

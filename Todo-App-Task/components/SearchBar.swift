@@ -10,11 +10,17 @@ import SwiftUI
 import SwiftUI
 struct SearchBar: View {
     @Binding var searchText: String
+    let onTextChange : ()-> Void
+    
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.gray)
-            TextField("Search...", text: $searchText)
+            TextField("Search...",
+                      text: $searchText)
+                .onChange(of: searchText){_ in
+                    onTextChange()
+                }
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
         }

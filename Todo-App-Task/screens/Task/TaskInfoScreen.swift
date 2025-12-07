@@ -13,10 +13,20 @@ struct TaskInfoScreen: View {
     
     @Binding var goToInfo : Bool
     
+    @State private var deleteTask = false
+    @State private var deleteTaskId = UUID()
+    
+    @State private var snackBar = false
+    @State private var snackBarMessage = ""
+    @State private var snackBarState = SnackBarType.info
+    @StateObject private var taskViewModel = TaskViewModel()
+    
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-            ScrollView {
+        ScrollView (.vertical,showsIndicators : false){
+            
+            ZStack {
                 VStack(alignment: .leading) {
                     
                     Text(task.title ?? "")
@@ -29,7 +39,7 @@ struct TaskInfoScreen: View {
                         TaskInfoRow(icon: "folder", iconColor: .orange, title: "Category", value: task.category ?? " ")
                     }
                     .padding(.vertical,30)
-                    .background(Color.white)
+                    .background(Color.cardColor)
                     .cornerRadius(20)
                     .shadow(color: .gray.opacity(0.2), radius: 10)
                     
@@ -61,7 +71,10 @@ struct TaskInfoScreen: View {
                     }
                     
                     HStack {
-                        Button(action: {}) {
+                        Button(action: {
+                            deleteTask = true
+                            deleteTaskId = task.id ?? UUID()
+                        }) {
                             HStack {
                                 Image(systemName: "trash")
                                 Text("Delete Task")
@@ -70,11 +83,42 @@ struct TaskInfoScreen: View {
                             .padding()
                         }
                         .padding(.horizontal)
-                        .padding(.top, 5)                    }
+                        .padding(.top, 5)
+                        
+                    }
                     .frame(maxWidth : .infinity)
                     
                     Spacer(minLength: 40)
+                    
+                    
+              
                 }
+                if deleteTask {
+                    AlertDialog(
+                        isActive: $deleteTask,
+                        title: "Delete This Task",
+                        message: "Are you sure want to delete this task? Even if completed it will delete.",
+                        buttonTitle: "Delete",
+                        action: {
+                            taskViewModel.deleteTask(
+                                taskId: deleteTaskId,
+                                onSuccess: {
+                                    snackBar = true
+                                    snackBarMessage = "Task Deleted Successfully !!!"
+                                    snackBarState = .success
+                                    goToInfo = false
+                                },
+                                onFailed: {
+                                    snackBar = true
+                                    snackBarMessage = "Task Delete Failed !!!"
+                                    snackBarState = .error
+                                }
+                            )
+                        }
+                    )
+                }
+                
+            }
             }
             .padding(.horizontal)
             .navigationBarTitle("Task Details", displayMode: .inline)

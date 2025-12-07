@@ -30,7 +30,8 @@ struct EditTaskScreen : View {
     
     @StateObject private var taskViewModel = TaskViewModel()
     
-
+    @State private var showImagePicker = false
+     @State private var selectedImage: UIImage? = nil
     
     var body: some View {
 
@@ -41,12 +42,57 @@ struct EditTaskScreen : View {
                     
                 VStack(alignment: .leading, spacing: 20) {
 
-        
-                    SectionHeader(title: "Task Title")
-                    TextField("e.g., Buy groceries", text: $title)
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(12)
+    
+                    HStack (spacing : 10){
+                        if let image = selectedImage {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 120, height: 120)
+                                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .stroke(Color.blue, lineWidth: 2)
+                                    )
+                                    .onTapGesture {
+                                        showImagePicker = true
+                                    }
+                            } else {
+                                Button(action: { showImagePicker = true }) {
+                                    VStack(spacing: 10) {
+                                        Image(systemName: "photo")
+                                            .font(.system(size: 36))
+                                            .foregroundColor(.blue)
+                                        Text("Add Thumbnail")
+                                            .foregroundColor(.blue)
+                                            .font(.headline)
+                                    }
+                                    .frame(width: 140, height: 120)
+                                    .background(Color(.systemGray6))
+                                    .cornerRadius(16)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .stroke(Color.blue, style: StrokeStyle(lineWidth: 2, dash: [6]))
+                                    )
+                                }
+                            }
+                        
+                    
+                        VStack (alignment : .leading){
+                            
+                            SectionHeader(title: "Task Title")
+                            
+                        TextField("e.g., Buy groceries", text: $title)
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .cornerRadius(12)
+                            
+                        }
+                        .frame(maxWidth : .infinity,alignment : .leading)
+                    }
+                    .frame(maxWidth : .infinity)
+                    
+                 
                     
                     SectionHeader(title: "Description")
                     TextField("Milk, bread, eggs...", text: $description)
@@ -183,6 +229,9 @@ struct EditTaskScreen : View {
                 }
                 
             }
+            .sheet(isPresented: $showImagePicker) {
+                ImagePicker(image: $selectedImage)
+            }
             .onAppear {
                 print("Edit screene appaer id \(String(describing: task.id))")
                 setTaskData()
@@ -194,7 +243,7 @@ struct EditTaskScreen : View {
                     
                     if validateFields() {
                         
-                        taskViewModel.updateTask(taskModel: TaskModel(id :taskId,title: title,desc: description,dueDate: dueDate!,priority: priority,category: category,isCompleted: isCompleted,reminder: reminder), onSuccess: {
+                        taskViewModel.updateTask(taskModel: TaskModel(id :taskId,title: title,desc: description,dueDate: dueDate!,priority: priority,category: category,isCompleted: isCompleted,reminder: reminder,thumnail : selectedImage?.jpegData(compressionQuality: 0.5)), onSuccess: {
                             
                             snackBar = true
                             snackBarMessgae = "Task Update Successfully";
@@ -254,6 +303,9 @@ struct EditTaskScreen : View {
     }
     
     func validateFields() -> Bool {
+        if selectedImage == nil {
+            return false
+        }
         if title.isEmpty {
             return false
         }

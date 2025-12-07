@@ -22,9 +22,6 @@ struct TaskProgressBar: View {
                     .frame(width: 100 * progress, height: 8)
             }
             
-            Text("\(Int(progress * 100))%")
-                .font(.caption)
-                .foregroundColor(.gray)
         }
     }
 }
