@@ -96,6 +96,7 @@ struct TaskScreen: View {
                             )
                         }
                     }
+                    .redacted(reason: isLoaded ? [] : .placeholder)
                     .padding(.bottom, 70)
                 }
                 Spacer()
@@ -148,12 +149,23 @@ struct TaskScreen: View {
                 DispatchQueue.main.async {
                     
                         if !isLoaded {
-                                isLoaded = true
+                                isLoaded = false
                                 taskViewModel.fetchAllTasks(
-                                    onSuccess: {},
-                                    onFailure: {}
+                                    onSuccess: {
+                                        DispatchQueue.main.asyncAfter (deadline : .now() + 3){
+                                            isLoaded = true
+                                        }
+                                       
+                                    },
+                                    onFailure: {
+                                        DispatchQueue.main.asyncAfter (deadline : .now() + 3){
+                                            isLoaded = true
+                                        }
+                                    }
                                 )
-                            }                }
+                            }
+                    
+                }
                 
             }
         }

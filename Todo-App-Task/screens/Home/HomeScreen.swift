@@ -126,6 +126,7 @@ struct HomeScreen: View {
                    
                 }
                 .padding()
+                .redacted(reason: homeViewModel.isLoaded ? [] : .placeholder)
                 
             }
             

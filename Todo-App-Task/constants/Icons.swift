@@ -12,4 +12,5 @@ class Icons {
     static let TASK_IC = "task_ic"
     static let SEARCH_IC = "search_ic"
     static let SETTING_IC = "setting_ic"
+    static let APP_LOGO = "app_logo"
 }

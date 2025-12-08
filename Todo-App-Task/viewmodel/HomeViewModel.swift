@@ -18,10 +18,15 @@ class HomeViewModel: ObservableObject {
     @Published var mediumPercent: CGFloat = 0.0
     @Published var lowPercent: CGFloat = 0.0
     @Published var upcomingTasks: [Task] = []
+    @Published var isLoaded = false
     private let repository: Database = TaskRepository.shared
+    
     
     init() {
         updateData()
+        DispatchQueue.main.asyncAfter (deadline : .now()+3){
+            self.isLoaded = true
+        }
     }
 
     
