@@ -66,6 +66,9 @@ struct TabScreen: View {
             
                 
             }
+            /*.frame(maxWidth : .infinity)
+            .tabViewStyle(PageTabViewStyle())
+                    .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))*/
             .accentColor(.blue)
                         
         }

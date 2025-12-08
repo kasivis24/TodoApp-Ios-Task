@@ -16,6 +16,7 @@ struct SearchBar: View {
         HStack {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.gray)
+            
             TextField("Search...",
                       text: $searchText)
                 .onChange(of: searchText){_ in
@@ -24,10 +25,11 @@ struct SearchBar: View {
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
         }
-        .padding(10)
+        .padding(15)
         .background(Color(.systemGray6))
         .cornerRadius(10)
         .padding(.horizontal)
+        .padding(.vertical,15)
     }
 }
 /*

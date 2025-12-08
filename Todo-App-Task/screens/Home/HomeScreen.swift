@@ -31,6 +31,7 @@ struct HomeScreen: View {
                         .frame(maxWidth : .infinity,
                                alignment: .leading
                                )
+                        .padding(.vertical)
                     
                     
                     HStack {
@@ -131,7 +132,29 @@ struct HomeScreen: View {
             }
             
         }
-        .navigationTitle("Zodo")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarItems(
+            leading: HStack (spacing : 5){
+                Image(Icons.APP_LOGO)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width : 65,height : 65)
+                
+                Text("Zodo")
+                   .font(.custom(Fonts.PUVI_BOLD, size: 25))
+            },
+            
+            trailing: HStack (spacing : 5){
+             
+                
+                    Image(systemName: "person.fill")
+                    .foregroundColor(.white)
+                    .frame(width : 35,height : 35)
+                    .background(Color.gray.opacity(0.4))
+                    .clipShape(Circle())
+                
+            }
+        )
     }
         
     }

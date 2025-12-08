@@ -15,12 +15,11 @@ struct EditTaskScreen : View {
     @State private var taskId = UUID()
     @State private var title: String = ""
     @State private var description: String = ""
-    @State private var dueDate: Date? = nil
+    @State private var dueDate = Date()
     @State private var reminder = false
     @State private var priority = "Medium"
     @State private var category = "Work"
     @State private var isCompleted = false
-    @State private var datePicker = false
 
     @State private var showDatePicker = false
     
@@ -32,6 +31,8 @@ struct EditTaskScreen : View {
     
     @State private var showImagePicker = false
      @State private var selectedImage: UIImage? = nil
+    
+    @State private var isDateChosen = true
     
     var body: some View {
 
@@ -116,9 +117,10 @@ struct EditTaskScreen : View {
                             }){
                                 
                                 
-                                Text(dueDate == nil ? "SelectDate" :
-                                        Utils.dateToString(dueDate!,format: "dd MMM YYYY"))
+                                Text(isDateChosen ? Utils.dateToString(dueDate) : "Select date")
                                     .foregroundColor(.blue)
+                                
+                                
                             }
                         
                                
@@ -179,42 +181,9 @@ struct EditTaskScreen : View {
                     .cornerRadius(15)
                     .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
                 }
-                
-                .sheet(isPresented : $showDatePicker){
-                    
-                    VStack {
-                        
-                        HStack {
-                            Button (action : {
-                                showDatePicker = !showDatePicker
-                            }){
-
-                                Text("Done")
-                                    .font(.custom(Fonts.PUVI_MEDIUM, size: 18))
-                                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/
-                                )
-                                
-                            }
-    
-                        }
-                        .frame(maxWidth : .infinity,alignment: .trailing)
-                        .padding()
-                        
-                        DatePicker("Due Date",
-                                             selection: Binding(
-                                                 get: { dueDate ?? Date() },
-                                                 set: { dueDate = $0 }
-                                             ),                                                    displayedComponents: [.date]
-                                         )
-                        .datePickerStyle(GraphicalDatePickerStyle())
-                        
-          
-                        
-                    }
-                    .frame(maxHeight : UIScreen.main.bounds.height * 0.40)
-                    .padding()
-                }
                 .padding()
+                    
+                    
                     
                     
                     ZStack {
@@ -225,6 +194,9 @@ struct EditTaskScreen : View {
                     }
                     .frame(maxWidth : .infinity,maxHeight : .infinity, alignment : .top)
                     
+                    if showDatePicker {
+                        DatePickerDialog(isPresented: $showDatePicker, selectedDate: $dueDate,isDateChosen: $isDateChosen)
+                    }
                     
                 }
                 
@@ -243,7 +215,7 @@ struct EditTaskScreen : View {
                     
                     if validateFields() {
                         
-                        taskViewModel.updateTask(taskModel: TaskModel(id :taskId,title: title,desc: description,dueDate: dueDate!,priority: priority,category: category,isCompleted: isCompleted,reminder: reminder,thumnail : selectedImage?.jpegData(compressionQuality: 0.5)), onSuccess: {
+                        taskViewModel.updateTask(taskModel: TaskModel(id :taskId,title: title,desc: description,dueDate: dueDate,priority: priority,category: category,isCompleted: isCompleted,reminder: reminder,thumnail : selectedImage?.jpegData(compressionQuality: 0.5)), onSuccess: {
                             
                             snackBar = true
                             snackBarMessgae = "Task Update Successfully";
@@ -314,7 +286,7 @@ struct EditTaskScreen : View {
         if description.isEmpty {
             return false
         }
-        if dueDate == nil {
+        if !isDateChosen {
             return false
         }
         return true

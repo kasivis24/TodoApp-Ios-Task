@@ -57,6 +57,7 @@ struct SearchScreen: View {
                                   }
                             )
                         
+                        
                         ForEach(searchViewModel.filteredTasks, id: \.id) { task in
                             TaskItem(
                                 title: task.title ?? "",
@@ -126,6 +127,7 @@ struct SearchScreen: View {
                     )
                 }
             }
+            .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(
                 leading: Text("Search")
                     .font(.custom(Fonts.PUVI_BOLD, size: 32)),

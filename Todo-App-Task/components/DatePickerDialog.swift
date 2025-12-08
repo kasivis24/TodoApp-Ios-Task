@@ -31,7 +31,7 @@ struct DatePickerDialog: View {
                     selection: $selectedDate,
                     displayedComponents: [.date]
                 )
-                .datePickerStyle(WheelDatePickerStyle())
+                .datePickerStyle(CompactDatePickerStyle())
                 .labelsHidden()
                 .frame(maxWidth: .infinity)
                 Divider()

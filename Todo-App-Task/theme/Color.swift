@@ -9,9 +9,10 @@ import Foundation
 import SwiftUI
 
 extension Color {
+    
     static let cardColor = Color("CardGray")
     static let primaryColor = Color("PrimaryColor")
-    
+    static let alertDialogColor = Color("AlertDialogColor")
     
     
     static func categoryBackground(_ category: String) -> Color {

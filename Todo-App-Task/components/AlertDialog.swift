@@ -43,7 +43,6 @@ struct AlertDialog: View {
                                 .foregroundColor(.gray.opacity(0.2))
                             Text("Cancel")
                                 .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(.black.opacity(0.7))
                                 .padding()
                         }
                         .padding()
@@ -70,7 +69,7 @@ struct AlertDialog: View {
             }
             .fixedSize(horizontal: false, vertical: true)
             .padding()
-            .background(Color.white)
+            .background(Color.alertDialogColor)
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .overlay(
                 Button(action: {
