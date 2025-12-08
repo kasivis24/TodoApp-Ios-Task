@@ -167,7 +167,7 @@ struct UpcoimgTaskItem : View {
     var priority : String
     
     var body : some View {
-        HStack {
+        HStack (spacing : 5){
             
             Image(systemName: icon)
                                 .font(.title2)
@@ -185,6 +185,7 @@ struct UpcoimgTaskItem : View {
                 Text("Due : \(dueDateContent)")
                     .font(.custom(Fonts.PUVI_REGULAR, size: 16))
             }
+            .frame(maxWidth : .infinity,alignment : .leading)
             
             Spacer()
             

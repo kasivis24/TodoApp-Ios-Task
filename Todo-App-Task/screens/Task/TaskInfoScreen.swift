@@ -48,7 +48,7 @@ struct TaskInfoScreen: View {
                             .font(.custom(Fonts.PUVI_MEDIUM, size: 21))
                         
                         Text("""
-\(task.description)
+\(task.desc ?? "")
 """)
                             .lineSpacing(7)
                             .font(.custom(Fonts.PUVI_MEDIUM, size: 17))

@@ -83,7 +83,7 @@ struct EditTaskScreen : View {
                             
                             SectionHeader(title: "Task Title")
                             
-                        TextField("e.g., Buy groceries", text: $title)
+                        TextField("eg : project report", text: $title)
                             .padding()
                             .background(Color(.systemGray6))
                             .cornerRadius(12)
@@ -96,7 +96,7 @@ struct EditTaskScreen : View {
                  
                     
                     SectionHeader(title: "Description")
-                    TextField("Milk, bread, eggs...", text: $description)
+                    TextField("Bug Fixing ,Enchnace UI ", text: $description)
                         .lineLimit(3)
                         .padding()
                         .background(Color(.systemGray6))

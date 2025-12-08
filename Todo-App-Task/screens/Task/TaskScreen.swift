@@ -64,41 +64,67 @@ struct TaskScreen: View {
                 .hidden()
                 
                 
-                ScrollView(.vertical, showsIndicators: false) {
+                if !taskViewModel.tasks.isEmpty {
                     
-                    VStack(spacing: 18) {
-                        ForEach(taskViewModel.tasks, id: \.id) { task in
-                            TaskItem(
-                                title: task.title ?? "",
-                                due: Utils.dateToString(task.dueDate ?? Date(), format: "dd MMM yyyy"),
-                                category: task.category ?? "",
-                                categoryColor: Color.categoryBackground( task.category ?? ""),
-                                categoryDotColor: Color.categoryDot(task.category ?? ""),
-                                progress: 0.25,
-                                completed: task.isCompleted,
-                                thumnail: task.thumnail,
-                                flagColor: Color.priorityFlag(task.priority ?? ""),
-                                isOverDue: task.isOverDue,
-                                onTapEdit: {
-                                    selectedTask = task
-                                    goToEdit = true
-                                },
-                                onTapDelete: {
-                  
-                                    deleteTaskId = task.id ?? UUID()
-                                    print("in ontapdelte closue -> taskId \(deleteTaskId)");                                deleteTask = true
-                                    
-                                },
-                                onInfo: {
-                                    selectedTask = task
-                                    goToTaskInfo = true
+                    
+                    ScrollView(.vertical, showsIndicators: false) {
+                        
+                    
+                            
+                            VStack(spacing: 18) {
+                                ForEach(taskViewModel.tasks, id: \.id) { task in
+                                    TaskItem(
+                                        title: task.title ?? "",
+                                        due: Utils.dateToString(task.dueDate ?? Date(), format: "dd MMM yyyy"),
+                                        category: task.category ?? "",
+                                        categoryColor: Color.categoryBackground( task.category ?? ""),
+                                        categoryDotColor: Color.categoryDot(task.category ?? ""),
+                                        progress: 0.25,
+                                        completed: task.isCompleted,
+                                        thumnail: task.thumnail,
+                                        flagColor: Color.priorityFlag(task.priority ?? ""),
+                                        isOverDue: task.isOverDue,
+                                        onTapEdit: {
+                                            selectedTask = task
+                                            goToEdit = true
+                                        },
+                                        onTapDelete: {
+                          
+                                            deleteTaskId = task.id ?? UUID()
+                                            print("in ontapdelte closue -> taskId \(deleteTaskId)");                                deleteTask = true
+                                            
+                                        },
+                                        onInfo: {
+                                            selectedTask = task
+                                            goToTaskInfo = true
+                                        }
+                                    )
                                 }
-                            )
                         }
+                        .redacted(reason: isLoaded ? [] : .placeholder)
+                            .padding(.bottom, 70)
                     }
-                    .redacted(reason: isLoaded ? [] : .placeholder)
-                    .padding(.bottom, 70)
+                }else {
+                    
+                    VStack {
+                        
+                        VStack (spacing : 10){
+                            
+                            Image(systemName : "swift")
+                                .resizable()
+                                .scaledToFit().frame(width : 40,height : 40)
+                            
+                            Text("No tasks founded ")
+                                .font(.custom(Fonts.PUVI_MEDIUM,size : 22))
+                            
+                            Text("Add the taak to get your day started")
+                                .font(.custom(Fonts.PUVI_REGULAR,size : 18))
+                        }
+                        
+                    }.frame(maxWidth : .infinity,maxHeight : .infinity)
+                    
                 }
+                
                 Spacer()
                 if bottomSheet {
                     /*BottomSheet(showSheet: $bottomSheet) {
