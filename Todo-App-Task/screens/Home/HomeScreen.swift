@@ -25,7 +25,7 @@ struct HomeScreen: View {
                     
                     
                     
-                    Text("Good Morning Bro !")
+                    Text("Good \(Utils.getTimePeriod()) Bro !")
                         .font(.custom(Fonts.PUVI_BOLD, size: 30)
                         )
                         .frame(maxWidth : .infinity,

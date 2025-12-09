@@ -14,8 +14,8 @@ class SearchViewModel: ObservableObject {
     @Published var searchText: String = ""
     @Published var selectedCategory: String = ""
     @Published var selectedPriority: String = ""
-    @Published var selectedDate: Date? = nil       // User selected date from date picker
-    @Published var selectedDueFilter: String = ""  // Today / Upcoming / Overdue / No Date
+    @Published var selectedDate: Date? = nil
+    @Published var selectedDueFilter: String = ""
     private let repository : Database = TaskRepository.shared
     
     @Published var tasks : [Task] = []
@@ -78,25 +78,25 @@ class SearchViewModel: ObservableObject {
         
         print("filter list before  \(filteredTasks)")
 
-        // 🔎 Search Filter
+       
         if !searchText.isEmpty {
             print("serachviewmodel -> search text")
             filteredTasks = filteredTasks.filter { task in
                 task.title?.localizedCaseInsensitiveContains(searchText) ?? false
             }
         }
-        // 📌 Category Filter
+       
         if !selectedCategory.isEmpty {
             print("searchviewmodel-> selct catgory");            filteredTasks = filteredTasks.filter { $0.category == selectedCategory
                 
             }
         }
-        // 🚩 Priority Filter
+      
         if !selectedPriority.isEmpty {
             print("searchviewmodle -> slecft piroity")
             filteredTasks = filteredTasks.filter { $0.priority == selectedPriority }
         }
-        // 📅 Date Picker Selected Date Filter
+      
         
         if let selectedDate = selectedDate {
             let targetDate = Calendar.current.startOfDay(for: selectedDate)
@@ -109,7 +109,7 @@ class SearchViewModel: ObservableObject {
             }
         }
         
-        // 📆 Due Filter Options (logic filter)
+      
         if selectedDueFilter == "Today" {
             print("serachviewmodlel -> slecct today")
             filteredTasks = filteredTasks.filter { Calendar.current.isDateInToday($0.dueDate ?? Date()) }
@@ -120,7 +120,7 @@ class SearchViewModel: ObservableObject {
         } else if selectedDueFilter == "No Date" {
             print("serachviewmodlel -> no date ");            filteredTasks = filteredTasks.filter { $0.dueDate == nil }
         }
-        // ⏳ Sort by date
+        
         filteredTasks.sort { ($0.dueDate ?? Date()) < ($1.dueDate ?? Date()) }
         
         print("Filter list \(filteredTasks)")    }

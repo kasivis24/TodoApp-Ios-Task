@@ -14,9 +14,9 @@ enum BottomSheetSize {
     var height: CGFloat {
         switch self {
         case .small:
-            return 200     // 20% or fixed
+            return 200
         case .medium:
-            return 400     // 40%
+            return 400   
         case .large:
             return UIScreen.main.bounds.height * 0.8
         }

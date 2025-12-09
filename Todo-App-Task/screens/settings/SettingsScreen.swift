@@ -18,7 +18,7 @@ struct SettingsScreen: View {
         NavigationView {
         
             Form {
-                // MARK: - Appearance
+               
                 Section(header: Text("APPEARANCE")
                             .font(
                                 .custom(Fonts.PUVI_MEDIUM, size: 18)
@@ -41,7 +41,7 @@ struct SettingsScreen: View {
                     }
                 }
                 
-                // MARK: - Notifications
+                
                 Section(header: Text("NOTIFICATIONS").font(
                     .custom(Fonts.PUVI_MEDIUM, size: 18)
                 )
@@ -55,7 +55,7 @@ struct SettingsScreen: View {
                     }
                 }
                 
-                // MARK: - Data Management
+             
                 Section(header: Text("DATA MANAGEMENT").font(
                     .custom(Fonts.PUVI_MEDIUM, size: 18)
                 )
@@ -71,7 +71,7 @@ struct SettingsScreen: View {
                     }
                 }
                 
-                // MARK: - Support
+               
                 Section(header: Text("SUPPORT").font(
                     .custom(Fonts.PUVI_MEDIUM, size: 18)
                 )
@@ -84,7 +84,7 @@ struct SettingsScreen: View {
                     }
                 }
                 
-                // MARK: - App Version
+                
                 VStack {
                     Text("Version 1.0.0 (123)")
                         .font(.footnote)
@@ -97,7 +97,7 @@ struct SettingsScreen: View {
         }
     }
     
-    // MARK: - Functions
+  
     func exportData() {
         print("Export tapped")
     }

@@ -100,6 +100,6 @@ class TaskViewModel : ObservableObject {
     
         func checkOverdueStatus() {
             repository.updateOverdueTasks()
-            tasks = repository.fetchAllTasks() // Refresh UI when overdue changes
+            tasks = repository.fetchAllTasks() 
         }
 }

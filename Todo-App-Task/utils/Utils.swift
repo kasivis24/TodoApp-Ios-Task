@@ -8,6 +8,23 @@
 import Foundation
 
 struct Utils {
+    
+    
+    static func getTimePeriod() -> String {
+            let hour = Calendar.current.component(.hour, from: Date())
+            switch hour {
+            case 5...11:
+                return "Morning"
+            case 12...16:
+                return "Afternoon"
+            case 17...20:
+                return "Evening"
+            default:
+                return "Night"
+            }
+        }
+    
+    
     static func dateToString(_ date: Date, format: String = "dd-MM-yyyy") ->String {
         let formatter = DateFormatter()
         formatter.dateFormat = format
@@ -35,7 +52,7 @@ struct Utils {
             default:
                 let formatter = DateFormatter()
                 formatter.dateStyle = .medium
-                return formatter.string(from: date) // e.g., "Dec 15, 2025"
+                return formatter.string(from: date)
             }
         }
 }

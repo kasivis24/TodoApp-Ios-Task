@@ -15,7 +15,7 @@ struct DatePickerDialog: View {
     
     var body: some View {
         ZStack {
-            // Background dimming
+            
             Color.black.opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
@@ -53,9 +53,9 @@ struct DatePickerDialog: View {
                 .frame(height: 50)
             }
             .padding(.bottom, 10)
-            .frame(width: 330)           // dialog width
+            .frame(width: 330)
             .background(Color.white)
-            .cornerRadius(20)            // full round
+            .cornerRadius(20)            
             .shadow(color: .black.opacity(0.3), radius: 15, x: 0, y: 8)
             .transition(.scale)
             .animation(.spring(), value: isPresented)

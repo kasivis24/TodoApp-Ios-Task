@@ -125,7 +125,7 @@ class TaskRepository: Database {
             do {
                 try context.save()
             } catch {
-                print("❌ Save failed: \(error)")
+                print(" Save failed: \(error)")
             }
         }
         
@@ -135,7 +135,7 @@ class TaskRepository: Database {
                 if let dueDate = task.dueDate,
                    dueDate < Date() {
                     if task.isOverDue == false {
-                        print("🔴 Task overdue updated: \(task.title ?? "")")
+                        print(" Task overdue updated: \(task.title ?? "")")
                     }
                     task.isOverDue = true
                 } else {
